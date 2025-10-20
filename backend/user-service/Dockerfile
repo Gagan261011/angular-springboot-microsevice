@@ -8,6 +8,7 @@ RUN mvn package -DskipTests
 
 # Stage 2: Create the final image
 FROM openjdk:17-jdk-slim
+RUN apt-get update && apt-get install -y curl
 WORKDIR /app
 COPY --from=builder /app/target/user-service-0.0.1-SNAPSHOT.jar /app/user-service.jar
 EXPOSE 8081

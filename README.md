@@ -111,6 +111,38 @@ The application will be available at http://localhost:4200.
 
 The application will be available at http://localhost:4200.
 
+## Sanity Test Results
+
+The application is currently **not stable**. During pre-deployment testing, several critical issues were identified that prevent the application from running correctly.
+
+### Eureka Dashboard
+
+The Eureka dashboard shows that only the `api-gateway` and `config-server` are registered. The other services are failing to start and register.
+
+![Eureka Dashboard](screenshots/screenshot-eureka-dashboard.png)
+
+### Docker Container Status
+
+The `docker compose ps` command shows that all containers are running, but the services are not healthy.
+
+```
+<pre>
+![Docker PS](screenshots/docker-ps.txt)
+</pre>
+```
+
+### Service Logs
+
+The logs for the failing services (`api-gateway`, `user-service`, `menu-service`, and `order-service`) all show a similar error:
+
+```
+<pre>
+![API Gateway Log](screenshots/api-gateway.log)
+</pre>
+```
+
+The services are failing to start because they are not configured to connect to the config server.
+
 ## API Endpoints
 
 ### User Service
