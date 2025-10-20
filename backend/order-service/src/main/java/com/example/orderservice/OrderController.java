@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/orders")
@@ -28,7 +29,18 @@ public class OrderController {
     }
 
     @PostMapping
-    public Order createOrder(@RequestBody Order order) {
+    public Order createOrder(@RequestBody OrderRequestDTO orderRequestDTO) {
+        Order order = new Order();
+        order.setUserId(orderRequestDTO.getUserId());
+        List<OrderItem> orderItems = orderRequestDTO.getOrderItems().stream()
+                .map(cartItemDTO -> {
+                    OrderItem orderItem = new OrderItem();
+                    orderItem.setMenuItemId(cartItemDTO.getMenuItem().getId());
+                    orderItem.setQuantity(cartItemDTO.getQuantity());
+                    return orderItem;
+                })
+                .collect(Collectors.toList());
+        order.setOrderItems(orderItems);
         return orderService.createOrder(order);
     }
 }
