@@ -1,0 +1,86 @@
+version: '3.8'
+
+services:
+  eureka-server:
+    build: backend/eureka-server
+    ports:
+      - "8761:8761"
+    networks:
+      - food-ordering-network
+
+  config-server:
+    build: backend/config-server
+    ports:
+      - "8888:8888"
+    depends_on:
+      - eureka-server
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/
+      - SPRING_PROFILES_ACTIVE=docker
+    networks:
+      - food-ordering-network
+
+  api-gateway:
+    build: backend/api-gateway
+    ports:
+      - "8080:8080"
+    depends_on:
+      - eureka-server
+      - config-server
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/
+      - SPRING_PROFILES_ACTIVE=docker
+    networks:
+      - food-ordering-network
+
+  user-service:
+    build: backend/user-service
+    ports:
+      - "8081:8081"
+    depends_on:
+      - eureka-server
+      - config-server
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/
+      - SPRING_PROFILES_ACTIVE=docker
+    networks:
+      - food-ordering-network
+
+  menu-service:
+    build: backend/menu-service
+    ports:
+      - "8082:8082"
+    depends_on:
+      - eureka-server
+      - config-server
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/
+      - SPRING_PROFILES_ACTIVE=docker
+    networks:
+      - food-ordering-network
+
+  order-service:
+    build: backend/order-service
+    ports:
+      - "8083:8083"
+    depends_on:
+      - eureka-server
+      - config-server
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/
+      - SPRING_PROFILES_ACTIVE=docker
+    networks:
+      - food-ordering-network
+
+  frontend:
+    build: frontend/food-ordering-app
+    ports:
+      - "4200:80"
+    depends_on:
+      - api-gateway
+    networks:
+      - food-ordering-network
+
+networks:
+  food-ordering-network:
+    driver: bridge

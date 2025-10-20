@@ -1,0 +1,22 @@
+<h2>Order History</h2>
+
+<div *ngIf="orders.length > 0; else noOrders">
+  <mat-card *ngFor="let order of orders" class="order-card">
+    <mat-card-header>
+      <mat-card-title>Order #{{ order.id }}</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <mat-list>
+        <mat-list-item *ngFor="let item of order.orderItems">
+          <h4 matLine>{{ item.menuItem.name }}</h4>
+          <p matLine>Quantity: {{ item.quantity }}</p>
+        </mat-list-item>
+      </mat-list>
+      <p><strong>Total:</strong> {{ order.totalPrice | currency }}</p>
+    </mat-card-content>
+  </mat-card>
+</div>
+
+<ng-template #noOrders>
+  <p>You have no past orders.</p>
+</ng-template>
