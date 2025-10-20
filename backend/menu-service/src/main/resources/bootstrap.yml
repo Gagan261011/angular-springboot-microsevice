@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: menu-service
+  cloud:
+    config:
+      uri: http://localhost:8888
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: docker
+  cloud:
+    config:
+      uri: http://config-server:8888

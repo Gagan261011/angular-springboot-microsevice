@@ -1,0 +1,23 @@
+<h2>Shopping Cart</h2>
+
+<div *ngIf="items.length > 0; else emptyCart">
+  <mat-list>
+    <mat-list-item *ngFor="let item of items">
+      <h3 matLine>{{ item.menuItem.name }}</h3>
+      <p matLine>
+        <span>Quantity: {{ item.quantity }}</span>
+        <span class="spacer"></span>
+        <span>Price: {{ (item.menuItem.price * item.quantity) | currency }}</span>
+      </p>
+    </mat-list-item>
+  </mat-list>
+
+  <div class="cart-actions">
+    <button mat-raised-button color="warn" (click)="clearCart()">Clear Cart</button>
+    <button mat-raised-button color="primary" (click)="placeOrder()">Place Order</button>
+  </div>
+</div>
+
+<ng-template #emptyCart>
+  <p>Your cart is empty.</p>
+</ng-template>

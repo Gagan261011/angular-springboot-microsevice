@@ -1,0 +1,23 @@
+<h2>Place Your Order</h2>
+
+<div *ngIf="items.length > 0">
+  <h3>Order Summary</h3>
+  <mat-list>
+    <mat-list-item *ngFor="let item of items">
+      <h3 matLine>{{ item.menuItem.name }}</h3>
+      <p matLine>
+        <span>Quantity: {{ item.quantity }}</span>
+        <span class="spacer"></span>
+        <span>Price: {{ (item.menuItem.price * item.quantity) | currency }}</span>
+      </p>
+    </mat-list-item>
+  </mat-list>
+
+  <p><strong>Total:</strong> {{ totalPrice | currency }}</p>
+
+  <button mat-raised-button color="primary" (click)="placeOrder()">Confirm Order</button>
+</div>
+
+<div *ngIf="items.length === 0">
+  <p>Your cart is empty. Please add items to your cart before placing an order.</p>
+</div>
